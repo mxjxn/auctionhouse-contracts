@@ -1,0 +1,45 @@
+{
+	"remappings": [
+		"@manifoldxyz/=node_modules/@manifoldxyz/",
+		"@openzeppelin/=node_modules/@openzeppelin/",
+		"create2-helpers/=lib/create2-helpers/src/",
+		"create2-scripts/=lib/create2-helpers/script/",
+		"ds-test/=lib/create2-helpers/lib/forge-std/lib/ds-test/src/",
+		"eth-gas-reporter/=node_modules/eth-gas-reporter/",
+		"forge-std/=lib/create2-helpers/lib/forge-std/src/",
+		"hardhat/=node_modules/hardhat/",
+		"openzeppelin-contracts/=lib/create2-helpers/lib/openzeppelin-contracts/",
+		"lib/create2-helpers:ds-test/=lib/create2-helpers/lib/forge-std/lib/ds-test/src/",
+		"lib/create2-helpers:forge-std/=lib/create2-helpers/lib/forge-std/src/",
+		"lib/create2-helpers:openzeppelin-contracts/=lib/create2-helpers/lib/openzeppelin-contracts/"
+	],
+	"optimizer": {
+		"enabled": true,
+		"runs": 295
+	},
+	"metadata": {
+		"useLiteralContent": false,
+		"bytecodeHash": "ipfs"
+	},
+	"outputSelection": {
+		"*": {
+			"*": [
+				"evm.bytecode",
+				"evm.deployedBytecode",
+				"devdoc",
+				"userdoc",
+				"metadata",
+				"abi"
+			]
+		}
+	},
+	"evmVersion": "london",
+	"libraries": {
+		"contracts/libs/MarketplaceLib.sol": {
+			"MarketplaceLib": "0x2BbaF1DcC6C8D05a7F8beFDEF93451a9762231E1"
+		},
+		"contracts/libs/SettlementLib.sol": {
+			"SettlementLib": "0xFd8a62ED5FfDa24C1dabd573c7C81657b0c97012"
+		}
+	}
+}
