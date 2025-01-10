@@ -3,4 +3,12 @@ src = "src"
 out = "out"
 libs = ["lib"]
 
+remappings = [
+  "@manifoldxyz/libraries-solidity=lib/libraries-solidity/contracts",
+  "@openzeppelin/contracts=lib/openzeppelin-contracts/contracts",
+  "@openzeppelin/contracts-upgradeable=lib/openzeppelin-contracts-upgradeable/contracts",
+  "@manifoldxyz/openzeppelin/contracts-upgradeable/=lib/libraries-solidity/lib/openzeppelin-contracts-upgradeable/contracts",
+  "@manifoldxyz/royalty-registry-solidity/=lib/royalty-registry-solidity/contracts"
+]
+
 # See more config options https://github.com/foundry-rs/foundry/blob/master/crates/config/README.md#all-options
