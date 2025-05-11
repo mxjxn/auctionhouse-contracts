@@ -4,9 +4,9 @@ pragma solidity ^0.8.26;
 
 /// @author: manifold.xyz
 
-import "@openzeppelin/contracts/utils/introspection/ERC165Checker.sol";
-import "@openzeppelin/contracts/utils/structs/EnumerableSet.sol";
-import "@openzeppelin/contracts/token/ERC721/IERC721Receiver.sol";
+import "@openzeppelin/utils/introspection/ERC165Checker.sol";
+import "@openzeppelin/utils/structs/EnumerableSet.sol";
+import "@openzeppelin/token/ERC721/IERC721Receiver.sol";
 
 import "./IMarketplaceCore.sol";
 import "./IMarketplaceSellerRegistry.sol";
@@ -17,6 +17,11 @@ import "./libs/TokenLib.sol";
 
 abstract contract MarketplaceCore is IMarketplaceCore, IERC721Receiver {
     using EnumerableSet for EnumerableSet.AddressSet;
+
+    event ListingCreated(
+        address indexed seller,
+        uint40 indexed listingId
+    );
 
     bool private _enabled;
     address private _sellerRegistry;
@@ -151,6 +156,8 @@ abstract contract MarketplaceCore is IMarketplaceCore, IERC721Receiver {
             listing.referrerBPS = referrerBPS;
         }
         MarketplaceLib.constructListing(seller, _listingCounter, listing, listingDetails, tokenDetails, deliveryFees, listingReceivers, acceptOffers, intake);
+        // emit event
+        emit ListingCreated(seller, _listingCounter);
 
         return _listingCounter;
     }

@@ -1,7 +1,13 @@
 [profile.default]
+build_info = true
+ast = true
+ffi = true
 src = "src"
 out = "out"
 libs = ["lib"]
+extra_output = ["storageLayout"]
+unsafe_allow = ["external-library-linking"]
+solc_version = "0.8.26" # Or your desired version
 
 remappings = [
   "@manifoldxyz/libraries-solidity=lib/libraries-solidity/contracts",

@@ -4,8 +4,8 @@ pragma solidity ^0.8.26;
 
 /// @author: manifold.xyz
 
-import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
-import "@openzeppelin/contracts/utils/structs/EnumerableSet.sol";
+import "@openzeppelin/token/ERC20/IERC20.sol";
+import "@openzeppelin/utils/structs/EnumerableSet.sol";
 import "@manifoldxyz/royalty-registry-solidity/IRoyaltyEngineV1.sol";
 
 import "../IIdentityVerifier.sol";

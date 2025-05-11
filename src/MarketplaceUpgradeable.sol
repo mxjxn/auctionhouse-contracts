@@ -4,9 +4,10 @@ pragma solidity ^0.8.0;
 
 /// @author: manifold.xyz
 
-import "@openzeppelin/contracts-upgradeable/utils/ReentrancyGuardUpgradeable.sol";
-import "@manifoldxyz/libraries-solidity/contracts/access/AdminControlUpgradeable.sol";
-import "./MarketplaceCore.sol";
+import "@openzeppelin-upgradeable/utils/ReentrancyGuardUpgradeable.sol";
+import { AdminControlUpgradeable } from "@lib/access/AdminControlUpgradeable.sol";
+import { IMarketplaceCore } from "./IMarketplaceCore.sol";
+import { MarketplaceCore } from "./MarketplaceCore.sol";
 
 contract MarketplaceUpgradeable is AdminControlUpgradeable, MarketplaceCore, ReentrancyGuardUpgradeable {
 

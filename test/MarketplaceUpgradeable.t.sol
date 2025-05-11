@@ -2,27 +2,34 @@
 pragma solidity ^0.8.26;
 
 import "forge-std/Test.sol";
+import "lib/openzeppelin-foundry-upgrades/src/Upgrades.sol";
 import "../src/MarketplaceUpgradeable.sol";
 import "../src/libs/MarketplaceLib.sol";
-import {ERC721} from "@openzeppelin/contracts/token/ERC721/ERC721.sol";
+import "../src/libs/TokenLib.sol";
+import "../src/DummyERC721.sol";
 
 contract MarketplaceUpgradeableTest is Test {
     MarketplaceUpgradeable private marketplace;
-    ERC721 private nft;
+    DummyERC721 private nft;
+    address private initialOwner = address(0x123); // Replace with actual initial owner address
 
     function setUp() public {
         // Deploy the MarketplaceUpgradeable contract
-        marketplace = new MarketplaceUpgradeable();
-        nft = new ERC721("tester", "TST");
+        nft = new DummyERC721("tester", "TST");
 
-        // Initialize the contract with an initial owner
-        address initialOwner = address(this);
-        marketplace.initialize(initialOwner);
+        MarketplaceUpgradeable marketplaceLogic = new MarketplaceUpgradeable();
+        console.log("MarketplaceUpgradeable Logic deployed at:", address(marketplaceLogic));
+
+        address proxyAddress = Upgrades.deployUUPSProxy(
+            "MarketplaceUpgradeable.sol:MarketplaceUpgradeable", // Path to your contract artifact
+            abi.encodeWithSelector(MarketplaceUpgradeable.initialize.selector, initialOwner)
+        );
+
+        marketplace = MarketplaceUpgradeable(proxyAddress);
+
     }
 
-    function testInitialize() public {
-        // Check if the contract is initialized correctly
-        // You can add assertions to verify the initial state
+    function testInitialize() public view {
         assertTrue(marketplace.supportsInterface(type(IMarketplaceCore).interfaceId), "Interface not supported");
     }
 
@@ -42,22 +49,29 @@ contract MarketplaceUpgradeableTest is Test {
         });
 
         MarketplaceLib.TokenDetails memory tokenDetails = MarketplaceLib.TokenDetails({
-            // Populate with appropriate test data
+            id: 1,
+            address_: address(nft),
+            spec: TokenLib.Spec.ERC721,
+            lazy: false
         });
 
         MarketplaceLib.DeliveryFees memory deliveryFees = MarketplaceLib.DeliveryFees({
-            // Populate with appropriate test data
+            deliverBPS: 100,
+            deliverFixed: 0
         });
 
         MarketplaceLib.ListingReceiver[] memory listingReceivers = new MarketplaceLib.ListingReceiver[](1);
+        // Assuming you have a receiver contract
         listingReceivers[0] = MarketplaceLib.ListingReceiver({
-            // Populate with appropriate test data
+            receiver: payable(address(0x138)),
+            receiverBPS: 1000 // Use the correct field name from the struct definition
         });
 
         bool enableReferrer = false;
         bool acceptOffers = true;
         bytes memory data = "";
 
+        vm.prank(address(0x137));
         // Call the createListing function
         uint40 listingId = marketplace.createListing(
             listingDetails,

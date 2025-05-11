@@ -4,7 +4,7 @@ pragma solidity ^0.8.26;
 
 /// @author: manifold.xyz
 
-import "@openzeppelin/contracts/utils/introspection/IERC165.sol";
+import "@openzeppelin/utils/introspection/IERC165.sol";
 
 interface IPriceEngine is IERC165 {
 
