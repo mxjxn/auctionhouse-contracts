@@ -18,11 +18,6 @@ import "./libs/TokenLib.sol";
 abstract contract MarketplaceCore is IMarketplaceCore, IERC721Receiver {
     using EnumerableSet for EnumerableSet.AddressSet;
 
-    event ListingCreated(
-        address indexed seller,
-        uint40 indexed listingId
-    );
-
     bool private _enabled;
     address private _sellerRegistry;
      
@@ -156,8 +151,6 @@ abstract contract MarketplaceCore is IMarketplaceCore, IERC721Receiver {
             listing.referrerBPS = referrerBPS;
         }
         MarketplaceLib.constructListing(seller, _listingCounter, listing, listingDetails, tokenDetails, deliveryFees, listingReceivers, acceptOffers, intake);
-        // emit event
-        emit ListingCreated(seller, _listingCounter);
 
         return _listingCounter;
     }

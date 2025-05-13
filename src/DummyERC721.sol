@@ -14,7 +14,7 @@ contract DummyERC721 is ERC721, Ownable {
         _tokenIdCounter = 1; // Start token IDs from 1
     }
 
-    function mint(address to) public onlyOwner {
+    function mint(address to) public {
         _safeMint(to, _tokenIdCounter);
         _tokenIdCounter++;
     }

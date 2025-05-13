@@ -2,7 +2,8 @@
 pragma solidity ^0.8.26;
 
 import "forge-std/Script.sol";
-import {Upgrades} from "openzeppelin-foundry-upgrades/Upgrades.sol"; // Adjust path as needed
+import { Upgrades } from "openzeppelin-foundry-upgrades/Upgrades.sol"; // Adjust path as needed
+import { Options } from "openzeppelin-foundry-upgrades/Options.sol"; // Adjust path as needed
 import "../src/MarketplaceUpgradeable.sol"; // Your implementation contract
 import "../src/MembershipSellerRegistry.sol"; // Assuming the path to the MembershipSellerRegistry contract
 
@@ -24,9 +25,13 @@ contract DeployContracts is Script {
         // 1. Deploy the logic contract
         MarketplaceUpgradeable marketplaceLogic = new MarketplaceUpgradeable();
         console.log("MarketplaceUpgradeable Logic deployed at:", address(marketplaceLogic));
+        // 2. Deploy the proxy contract
+        Options memory options;
+        options.unsafeAllow = "external-library-linking";
         address proxyAddress = Upgrades.deployUUPSProxy(
             "MarketplaceUpgradeable.sol:MarketplaceUpgradeable", // Path to your contract artifact
-            abi.encodeWithSelector(MarketplaceUpgradeable.initialize.selector, initialOwner)
+            abi.encodeWithSelector(MarketplaceUpgradeable.initialize.selector, initialOwner), 
+            options
         );
 
         console.log("MarketplaceUpgradeable Proxy deployed at:", proxyAddress);
