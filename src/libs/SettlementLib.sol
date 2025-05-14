@@ -7,6 +7,7 @@ pragma solidity ^0.8.26;
 import "@openzeppelin/token/ERC20/IERC20.sol";
 import "@openzeppelin/utils/structs/EnumerableSet.sol";
 import "@manifoldxyz/royalty-registry-solidity/IRoyaltyEngineV1.sol";
+import {console} from "forge-std/console.sol";
 
 import "../IIdentityVerifier.sol";
 import "../ILazyDelivery.sol";
@@ -263,6 +264,7 @@ library SettlementLib {
 
         if (listing.details.erc20 == address(0)) {
             if (strict) {
+                console.log("amount is", amount);
                 require(msg.value == amount, msg.value < amount ? "Insufficient funds" : "Invalid amount");
             } else {
                 if (msg.value < amount) {

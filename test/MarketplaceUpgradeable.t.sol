@@ -36,6 +36,7 @@ contract MarketplaceUpgradeableTest is Test {
 
         marketplace = MarketplaceUpgradeable(proxyAddress);
 
+
     }
 
     function testInitialize() public view {
@@ -62,7 +63,7 @@ contract MarketplaceUpgradeableTest is Test {
             erc20: address(0), // Zero address for native ETH
             identityVerifier: address(0), // No identity verification
             startTime: uint48(0),
-            endTime: uint48(block.timestamp + 1 days) // Ends in 7 days
+            endTime: uint48(block.timestamp + 1 hours) // Ends in 7 days
         });
         MarketplaceLib.TokenDetails memory tokenDetails = MarketplaceLib.TokenDetails({
             id: 1,
@@ -88,7 +89,6 @@ contract MarketplaceUpgradeableTest is Test {
         bytes memory data = "";
 
         vm.prank(address(0x10001));
-        // Call the createListing function
         uint40 listingId = marketplace.createListing(
             listingDetails,
             tokenDetails,
@@ -98,12 +98,12 @@ contract MarketplaceUpgradeableTest is Test {
             acceptOffers,
             data
         );
-        // Assert that the listing was created successfully
         assertTrue(listingId > 0, "Listing ID should be greater than 0");
 
-        vm.deal(address(0x10002), 1 ether);
+
+        deal(address(0x10002), 1 ether);
         vm.prank(address(0x10002));
-        marketplace.bid{value:0.11 ether}(
+        marketplace.bid{value:0.15 ether}(
             listingId,
             false
         );
@@ -112,5 +112,11 @@ contract MarketplaceUpgradeableTest is Test {
             address(0x10002),
             "Highest bidder should be 0x10002"
         );
+
+        vm.warp(block.timestamp + 2 hours);
+        deal(address(0x10002), 1 ether);
+        vm.prank(address(0x10001));
+        marketplace.finalize(listingId);
+        assertEq( nft.ownerOf(1), address(0x10002), "NFT should be owned by the highest bidder");
     }
 } 
