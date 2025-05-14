@@ -116,6 +116,7 @@ contract MarketplaceUpgradeableTest is Test {
         vm.warp(block.timestamp + 2 hours);
         deal(address(0x10002), 1 ether);
         vm.prank(address(0x10001));
+        //ERROR is thrown from the line below:
         marketplace.finalize(listingId);
         assertEq( nft.ownerOf(1), address(0x10002), "NFT should be owned by the highest bidder");
     }
