@@ -20,7 +20,12 @@ Foundry consists of:
 
 ## Documentation
 
-https://book.getfoundry.sh/
+- [Capabilities Documentation](./CAPABILITIES.md) - Comprehensive guide to auctionhouse features
+- [Integration Guide](./INTEGRATION_GUIDE.md) - How to integrate Creator Core contracts with the auctionhouse
+- [Integration Examples](./src/examples/README.md) - Example contracts and adapters
+- [Deployment Guide](./DEPLOYMENT.md) - Step-by-step deployment instructions for local and testnet
+
+Foundry Documentation: https://book.getfoundry.sh/
 
 ## Usage
 
@@ -56,9 +61,38 @@ $ anvil
 
 ### Deploy
 
+Deploy contracts using the deployment script:
+
+**Local (Anvil)**:
 ```shell
-$ forge script script/Counter.s.sol:CounterScript --rpc-url <your_rpc_url> --private-key <your_private_key>
+# Start Anvil in a separate terminal
+$ anvil
+
+# Set environment variables
+$ export PRIVATE_KEY=<your pk>
+
+# Deploy
+$ ./scripts/deploy.sh local
 ```
+
+**Base Sepolia**:
+```shell
+# Set environment variables
+$ export PRIVATE_KEY=your_private_key
+$ export BASE_SEPOLIA_RPC_URL=https://sepolia.base.org
+
+# Deploy
+$ ./scripts/deploy.sh base-sepolia
+```
+
+**Manual deployment**:
+```shell
+$ forge script script/DeployContracts.s.sol:DeployContracts \
+    --rpc-url <your_rpc_url> \
+    --broadcast
+```
+
+See the [Deployment Guide](./DEPLOYMENT.md) for detailed instructions.
 
 ### Cast
 
