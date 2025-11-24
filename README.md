@@ -2,9 +2,8 @@
 
 This is a fork of the [Manifold Gallery](https://gallery.manifold.xyz) Auctionhouse contracts, written for the [Cryptoart](https://warpcast.com/~/channel/cryptoart) channel on Farcaster. 
 
-The main differences are:
+The main difference is:
 
-- new listings emit an event upon creation
 - the seller registry is linked to active hypersub membership (STP v2 NFT's `balanceOf` function returns time-remaining)
 
 ## Foundry

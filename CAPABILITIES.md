@@ -6,7 +6,6 @@ The Auctionhouse Contracts is a comprehensive marketplace system for selling NFT
 
 ### Key Differences from Original
 
-- **Listing Creation Events**: New listings emit events upon creation for better off-chain tracking
 - **Membership-Based Seller Registry**: The seller registry is linked to active hypersub membership (STP v2 NFT's `balanceOf` function returns time-remaining)
 
 ### Architecture Overview
