@@ -25,7 +25,22 @@ contract DeployContracts is Script {
         string memory mockNFTName = vm.envOr("MOCK_NFT_NAME", string("Cryptoart Membership"));
         string memory mockNFTSymbol = vm.envOr("MOCK_NFT_SYMBOL", string("CRYPTOART"));
 
-        uint256 deployerPrivateKey = vm.envUint("PRIVATE_KEY");
+        // Derive private key from mnemonic if provided, otherwise use PRIVATE_KEY
+        uint256 deployerPrivateKey;
+        address derivedAddress;
+        
+        try vm.envString("MNEMONIC") returns (string memory mnemonic) {
+            uint32 mnemonicIndex = uint32(vm.envOr("MNEMONIC_INDEX", uint256(0)));
+            deployerPrivateKey = vm.deriveKey(mnemonic, mnemonicIndex);
+            derivedAddress = vm.addr(deployerPrivateKey);
+            console.log("Derived private key from mnemonic");
+            console.log("Mnemonic index:", vm.toString(mnemonicIndex));
+            console.log("Derived address:", derivedAddress);
+        } catch {
+            deployerPrivateKey = vm.envUint("PRIVATE_KEY");
+            derivedAddress = vm.addr(deployerPrivateKey);
+        }
+        
         vm.startBroadcast(deployerPrivateKey);
 
         console.log("==========================================");

@@ -56,10 +56,42 @@ case $NETWORK in
         ;;
 esac
 
-# Check if PRIVATE_KEY is set
-if [ -z "$PRIVATE_KEY" ]; then
-    print_error "PRIVATE_KEY environment variable is not set"
-    print_info "Set it with: export PRIVATE_KEY=your_private_key"
+# Load and export environment variables from .env.local if it exists
+if [ -f .env.local ]; then
+    print_info "Loading environment variables from .env.local..."
+    set -a  # Automatically export all variables
+    source .env.local
+    set +a  # Turn off automatic export
+fi
+
+# Strip quotes from MNEMONIC if present (handles both single and double quotes from .env files)
+if [ -n "$MNEMONIC" ]; then
+    MNEMONIC=$(echo "$MNEMONIC" | sed "s/^[[:space:]]*['\"]//; s/['\"][[:space:]]*$//; s/^[[:space:]]*//; s/[[:space:]]*$//")
+fi
+
+# Derive private key from mnemonic if provided
+if [ -n "$MNEMONIC" ]; then
+    # Use MNEMONIC_INDEX if set, otherwise default to 0
+    MNEMONIC_INDEX=${MNEMONIC_INDEX:-0}
+    export MNEMONIC_INDEX  # Export for forge script
+    export MNEMONIC  # Export for forge script (after quote stripping)
+    
+    print_info "Using MNEMONIC to derive private key (index $MNEMONIC_INDEX)..."
+    DERIVED_PRIVATE_KEY=$(cast wallet private-key "$MNEMONIC" $MNEMONIC_INDEX 2>/dev/null || echo "")
+    
+    if [ -n "$DERIVED_PRIVATE_KEY" ]; then
+        PRIVATE_KEY="$DERIVED_PRIVATE_KEY"
+        DERIVED_ADDRESS=$(cast wallet address $PRIVATE_KEY 2>/dev/null || echo "")
+        print_info "✓ Derived private key from mnemonic (index $MNEMONIC_INDEX)"
+        print_info "  Address: $DERIVED_ADDRESS"
+    else
+        print_error "Could not derive private key from mnemonic at index $MNEMONIC_INDEX!"
+        exit 1
+    fi
+elif [ -z "$PRIVATE_KEY" ]; then
+    print_error "Either PRIVATE_KEY or MNEMONIC environment variable must be set"
+    print_info "Set MNEMONIC with: export MNEMONIC=\"your twelve word seed phrase\""
+    print_info "Or set PRIVATE_KEY with: export PRIVATE_KEY=your_private_key"
     exit 1
 fi
 
@@ -93,4 +125,6 @@ else
     print_error "Deployment failed"
     exit 1
 fi
+
+
 
