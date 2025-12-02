@@ -1,0 +1,26 @@
+{
+  "chainId": 84532,
+  "owner": "0x6dA173B1d50F7Bc5c686f8880C20378965408344",
+  "deploymentBlock": 34297185,
+  "deploymentDate": "2024-11-28",
+  "testStatus": "ALL TESTS PASSED",
+  "contracts": {
+    "marketplaceProxy": "0x5336a0C2476EAdcE32C7f3C58bE809c700e4db2e",
+    "marketplaceImplementation": "0x7DAA7bBedaFEE708cf83Ba740A1c7d7d239243f4",
+    "sellerRegistry": "0x617753FD6Fa31E07b4A7996010D0964f001288d0",
+    "mockNFT": "0x843aE43b40c8370dFFc29fF87bE38953f8BbaAec",
+    "mockRoyaltyEngine": "0x80e61595597F6C085a35693050b72757DD8cd85d",
+    "marketplaceLib": "0x7ccda9a722bc7cfbbac737043b2b893718519ba8",
+    "settlementLib": "0x4f6f47168dd8f0989279f25e1e8d2350e02aa677"
+  },
+  "testResults": {
+    "fixedPriceListing": "PASSED - Created listing ID 1, purchased successfully",
+    "auctionListing": "PASSED - Created listing ID 2, bids placed, finalized successfully",
+    "testedBlocks": [34297654, 34297798, 34298069]
+  },
+  "notes": [
+    "Fresh deployment with MockRoyaltyEngine configured from start",
+    "Libraries (MarketplaceLib, SettlementLib) reused from previous deployment",
+    "All marketplace functionality tested and verified"
+  ]
+}

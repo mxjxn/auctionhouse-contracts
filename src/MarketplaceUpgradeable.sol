@@ -4,8 +4,8 @@ pragma solidity ^0.8.0;
 
 /// @author: manifold.xyz
 
-import { ReentrancyGuardUpgradeable } from "@openzeppelin-upgradeable/utils/ReentrancyGuardUpgradeable.sol";
-import { OwnableUpgradeable } from "@openzeppelin-upgradeable/access/OwnableUpgradeable.sol";
+import { ReentrancyGuardUpgradeable } from "@manifoldxyz/openzeppelin/contracts-upgradeable/security/ReentrancyGuardUpgradeable.sol";
+import { OwnableUpgradeable } from "@manifoldxyz/openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
 import { AdminControlUpgradeable } from "@lib/access/AdminControlUpgradeable.sol";
 import { IMarketplaceCore } from "./IMarketplaceCore.sol";
 import { MarketplaceCore } from "./MarketplaceCore.sol";
@@ -21,9 +21,9 @@ contract MarketplaceUpgradeable is AdminControlUpgradeable, MarketplaceCore, Ree
      * Initializer
      */
     function initialize(address initialOwner) public initializer {
-        _transferOwnership(initialOwner);
         __ReentrancyGuard_init();
-        __Ownable_init(initialOwner);
+        __Ownable_init();
+        _transferOwnership(initialOwner);
         _setEnabled(true);
     }
 

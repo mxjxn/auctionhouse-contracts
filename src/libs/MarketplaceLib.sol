@@ -4,13 +4,12 @@ pragma solidity ^0.8.26;
 
 /// @author: manifold.xyz
 
-import "@openzeppelin/token/ERC721/IERC721.sol";
-import "@openzeppelin/utils/introspection/ERC165Checker.sol";
-import "@openzeppelin/utils/structs/EnumerableSet.sol";
+import "@openzeppelin/contracts/token/ERC721/IERC721.sol";
+import "@openzeppelin/contracts/utils/introspection/ERC165Checker.sol";
+import "@openzeppelin/contracts/utils/structs/EnumerableSet.sol";
 import "@manifoldxyz/openzeppelin/contracts-upgradeable/utils/AddressUpgradeable.sol";
 
 import {IAdminControl} from "@lib/access/IAdminControl.sol";
-import "lib/openzeppelin-contracts-upgradeable/contracts/proxy/utils/Initializable.sol";
 import "../IIdentityVerifier.sol";
 import "../ILazyDelivery.sol";
 import "../IPriceEngine.sol";

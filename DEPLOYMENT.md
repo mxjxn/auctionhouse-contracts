@@ -102,28 +102,53 @@ You'll need Base Sepolia ETH for gas fees. Get it from:
 
 ### Step 2: Set Environment Variables
 
+Create a `.env` or `.env.local` file in the `packages/auctionhouse-contracts` directory with the following variables:
+
 ```bash
 # Required: Your deployer private key (without 0x prefix)
-export PRIVATE_KEY=your_private_key_here
+# OR use MNEMONIC instead (recommended for security)
+PRIVATE_KEY=your_private_key_here
+
+# OR use mnemonic (alternative to PRIVATE_KEY)
+MNEMONIC="your twelve word seed phrase"
+MNEMONIC_INDEX=0  # Optional, defaults to 0
 
 # Optional: Set owner address (defaults to deployer)
-export OWNER=0xYourOwnerAddress
+OWNER=0xYourOwnerAddress
 
 # Optional: Custom RPC URL (defaults to public Base Sepolia RPC)
-export BASE_SEPOLIA_RPC_URL=https://sepolia.base.org
+BASE_SEPOLIA_RPC_URL=https://sepolia.base.org
+
+# Optional: Basescan API key for contract verification
+# Get one from: https://basescan.org/myapikey
+BASESCAN_API_KEY=your_api_key_here
+# OR use ETHERSCAN_API_KEY (some tools accept this for Base networks)
+ETHERSCAN_API_KEY=your_api_key_here
 ```
 
-**⚠️ Security Warning**: Never commit your private key to version control. Use environment variables or a secure key management system.
+**⚠️ Security Warning**: Never commit your private key or mnemonic to version control. Use `.env.local` (which should be in `.gitignore`) or a secure key management system.
 
 ### Step 3: Deploy Contracts
 
-Use the deployment script:
+**Option 1: Use the dedicated Base Sepolia deployment script (recommended)**
+
+```bash
+./scripts/deploy-base-sepolia.sh
+```
+
+This script includes:
+- Balance checking
+- RPC connection verification
+- Automatic contract verification on Basescan
+- Detailed deployment information
+
+**Option 2: Use the general deployment script**
 
 ```bash
 ./scripts/deploy.sh base-sepolia
 ```
 
-Or deploy manually with forge:
+**Option 3: Deploy manually with forge**
 
 ```bash
 forge script script/DeployContracts.s.sol:DeployContracts \

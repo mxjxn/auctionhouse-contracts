@@ -2,8 +2,8 @@
 
 pragma solidity ^0.8.26;
 
-import "@openzeppelin/token/ERC721/IERC721.sol";
-import "@openzeppelin/interfaces/IERC165.sol";
+import "@openzeppelin/contracts/token/ERC721/IERC721.sol";
+import "@openzeppelin/contracts/interfaces/IERC165.sol";
 import "./IMarketplaceSellerRegistry.sol";
 
 contract MembershipSellerRegistry is IMarketplaceSellerRegistry {

@@ -4,9 +4,9 @@ pragma solidity ^0.8.26;
 
 /// @author: manifold.xyz
 
-import "@openzeppelin/utils/introspection/ERC165Checker.sol";
-import "@openzeppelin/utils/structs/EnumerableSet.sol";
-import "@openzeppelin/token/ERC721/IERC721Receiver.sol";
+import "@openzeppelin/contracts/utils/introspection/ERC165Checker.sol";
+import "@openzeppelin/contracts/utils/structs/EnumerableSet.sol";
+import "@openzeppelin/contracts/token/ERC721/IERC721Receiver.sol";
 
 import "./IMarketplaceCore.sol";
 import "./IMarketplaceSellerRegistry.sol";
@@ -58,7 +58,6 @@ abstract contract MarketplaceCore is IMarketplaceCore, IERC721Receiver {
      * @dev Set royalty engine
      */
     function _setRoyaltyEngineV1(address royaltyEngineV1) internal {
-        require(_royaltyEngineV1 == address(0), "Invalid state");
         emit MarketplaceRoyaltyEngineUpdate(royaltyEngineV1);
         _royaltyEngineV1 = royaltyEngineV1;
     }

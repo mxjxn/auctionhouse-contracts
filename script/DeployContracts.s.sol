@@ -29,16 +29,19 @@ contract DeployContracts is Script {
         uint256 deployerPrivateKey;
         address derivedAddress;
         
-        try vm.envString("MNEMONIC") returns (string memory mnemonic) {
+        string memory mnemonic = vm.envOr("MNEMONIC", string(""));
+        if (bytes(mnemonic).length > 0) {
             uint32 mnemonicIndex = uint32(vm.envOr("MNEMONIC_INDEX", uint256(0)));
             deployerPrivateKey = vm.deriveKey(mnemonic, mnemonicIndex);
             derivedAddress = vm.addr(deployerPrivateKey);
             console.log("Derived private key from mnemonic");
             console.log("Mnemonic index:", vm.toString(mnemonicIndex));
             console.log("Derived address:", derivedAddress);
-        } catch {
+        } else {
             deployerPrivateKey = vm.envUint("PRIVATE_KEY");
             derivedAddress = vm.addr(deployerPrivateKey);
+            console.log("Using PRIVATE_KEY from environment");
+            console.log("Deployer address:", derivedAddress);
         }
         
         vm.startBroadcast(deployerPrivateKey);
@@ -111,13 +114,13 @@ contract DeployContracts is Script {
     function _saveDeploymentInfo(DeploymentInfo memory info) internal {
         string memory json = string.concat(
             "{\n",
-            '  "chainId": ', vm.toString(info.chainId), ",\n",
-            '  "owner": "', vm.toString(info.owner), '",\n",
-            '  "contracts": {\n',
-            '    "mockNFT": "', vm.toString(info.mockNFT), '",\n',
-            '    "marketplaceLogic": "', vm.toString(info.marketplaceLogic), '",\n',
-            '    "marketplaceProxy": "', vm.toString(info.marketplaceProxy), '",\n',
-            '    "sellerRegistry": "', vm.toString(info.sellerRegistry), '"\n',
+            "  \"chainId\": ", vm.toString(info.chainId), ",\n",
+            "  \"owner\": \"", vm.toString(info.owner), "\",\n",
+            "  \"contracts\": {\n",
+            "    \"mockNFT\": \"", vm.toString(info.mockNFT), "\",\n",
+            "    \"marketplaceLogic\": \"", vm.toString(info.marketplaceLogic), "\",\n",
+            "    \"marketplaceProxy\": \"", vm.toString(info.marketplaceProxy), "\",\n",
+            "    \"sellerRegistry\": \"", vm.toString(info.sellerRegistry), "\"\n",
             "  }\n",
             "}\n"
         );

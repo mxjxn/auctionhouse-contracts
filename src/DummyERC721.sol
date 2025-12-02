@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.26;
 
-import "@openzeppelin/token/ERC721/ERC721.sol";
-import "@openzeppelin/access/Ownable.sol";
+import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
+import "@openzeppelin/contracts/access/Ownable.sol";
 
 contract DummyERC721 is ERC721, Ownable {
     uint256 private _tokenIdCounter;
@@ -11,6 +11,7 @@ contract DummyERC721 is ERC721, Ownable {
       ERC721(name, symbol) 
       Ownable(msg.sender)
     {
+        _transferOwnership(msg.sender);
         _tokenIdCounter = 1; // Start token IDs from 1
     }
 

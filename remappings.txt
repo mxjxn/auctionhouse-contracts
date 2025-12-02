@@ -1,4 +1,0 @@
-@openzeppelin/=lib/openzeppelin-contracts/contracts/
-@openzeppelin-upgradeable/=lib/openzeppelin-contracts-upgradeable/contracts/
-@lib/=lib/libraries-solidity/contracts/
-@openzeppelin-foundry-upgrades/=lib/openzeppelin-foundry-upgrades/src/
