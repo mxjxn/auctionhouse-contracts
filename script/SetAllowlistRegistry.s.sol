@@ -42,7 +42,7 @@ contract SetAllowlistRegistry is Script {
         
         console.log("\nSetting seller registry to MembershipAllowlistRegistry...");
         marketplace.setSellerRegistry(allowlistRegistry);
-        console.log("✅ Seller registry updated!");
+        console.log("[OK] Seller registry updated!");
 
         vm.stopBroadcast();
 
@@ -50,7 +50,7 @@ contract SetAllowlistRegistry is Script {
         console.log("Configuration Complete!");
         console.log("==========================================");
         console.log("Marketplace Proxy:", marketplaceProxy);
-        console.log("Seller Registry:", newRegistry);
+        console.log("Seller Registry:", allowlistRegistry);
         console.log("==========================================");
     }
 }
