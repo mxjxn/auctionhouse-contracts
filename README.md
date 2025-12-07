@@ -2,9 +2,12 @@
 
 This is a fork of the [Manifold Gallery](https://gallery.manifold.xyz) Auctionhouse contracts, written for the [Cryptoart](https://warpcast.com/~/channel/cryptoart) channel on Farcaster. 
 
-The main difference is:
+The main differences are:
 
-- the seller registry is linked to active hypersub membership (STP v2 NFT's `balanceOf` function returns time-remaining)
+- **Multiple seller registry options**:
+  - `OpenSellerRegistry`: Allow-all with owner-managed blocklist (open marketplace)
+  - `MembershipSellerRegistry`: Requires membership NFT to sell
+  - `MembershipAllowlistRegistry`: Membership + associated wallet support
 
 ## Foundry
 

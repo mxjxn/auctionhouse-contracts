@@ -17,6 +17,8 @@ This document contains deployment information for the Auctionhouse contracts acr
 | **Royalty Engine** | `0xEF770dFb6D5620977213f55f99bfd781D04BBE15` | Manifold Royalty Engine V1 |
 | **Royalty Registry** | `0x3D1151dc590ebF5C04501a7d4E1f8921546774eA` | Manifold Royalty Registry |
 | **MembershipAllowlistRegistry** | `0xF190fD214844931a92076aeCB5316f769f4A8483` | Seller registry with address allowlisting |
+| **MembershipSellerRegistry** | `0x372990fd91cf61967325dd5270f50c4192bfb892` | Simple membership check (balanceOf > 0) |
+| **OpenSellerRegistry** | `0xBB428171D8B612D7185A5C25118Ef7EdC3089B37` | Open registry with owner-managed blocklist |
 
 ### Contract Links
 
@@ -25,6 +27,8 @@ This document contains deployment information for the Auctionhouse contracts acr
 - [Royalty Engine on BaseScan](https://basescan.org/address/0xEF770dFb6D5620977213f55f99bfd781D04BBE15)
 - [Royalty Registry on BaseScan](https://basescan.org/address/0x3D1151dc590ebF5C04501a7d4E1f8921546774eA)
 - [MembershipAllowlistRegistry on BaseScan](https://basescan.org/address/0xF190fD214844931a92076aeCB5316f769f4A8483)
+- [MembershipSellerRegistry on BaseScan](https://basescan.org/address/0x372990fd91cf61967325dd5270f50c4192bfb892)
+- [OpenSellerRegistry on BaseScan](https://basescan.org/address/0xBB428171D8B612D7185A5C25118Ef7EdC3089B37)
 
 ### Deployment Notes
 
@@ -60,6 +64,47 @@ forge script script/DeployMembershipAllowlistRegistry.s.sol:DeployMembershipAllo
 **Next Steps**:
 - Set as seller registry in marketplace using `setSellerRegistry(address)`
 - Marketplace Proxy: `0x1Cb0c1F72Ba7547fC99c4b5333d8aBA1eD6b31A9`
+
+### OpenSellerRegistry Deployment
+
+**Deployment Date**: 2025-12-07  
+**Block**: 39145058  
+**Transaction Hash**: [`0x204d4a071b6988d292683955e7f51d9a2efa0249003c30878dca11861a895639`](https://basescan.org/tx/0x204d4a071b6988d292683955e7f51d9a2efa0249003c30878dca11861a895639)  
+**Deployer/Owner**: `0x6dA173B1d50F7Bc5c686f8880C20378965408344`  
+**Status**: ✅ Successfully Deployed
+
+**Contract Address**: `0xBB428171D8B612D7185A5C25118Ef7EdC3089B37`
+
+**Features**:
+- **Allow-all by default**: Everyone can sell unless explicitly blocklisted
+- **Owner-managed blocklist**: Only owner can add/remove addresses from blocklist
+- Implements `IMarketplaceSellerRegistry` interface
+- Gas efficient: Single mapping lookup for authorization
+
+**Blocklist Management**:
+```bash
+# Block an address
+cast send --rpc-url $RPC_URL --private-key $PRIVATE_KEY \
+  0xBB428171D8B612D7185A5C25118Ef7EdC3089B37 "addToBlocklist(address)" <ADDRESS>
+
+# Block multiple addresses
+cast send --rpc-url $RPC_URL --private-key $PRIVATE_KEY \
+  0xBB428171D8B612D7185A5C25118Ef7EdC3089B37 "addToBlocklistBatch(address[])" "[0xADDR1,0xADDR2]"
+
+# Unblock an address
+cast send --rpc-url $RPC_URL --private-key $PRIVATE_KEY \
+  0xBB428171D8B612D7185A5C25118Ef7EdC3089B37 "removeFromBlocklist(address)" <ADDRESS>
+
+# Check if address is blocklisted
+cast call --rpc-url $RPC_URL \
+  0xBB428171D8B612D7185A5C25118Ef7EdC3089B37 "isBlocklisted(address)(bool)" <ADDRESS>
+```
+
+**Set as Active Registry**:
+```bash
+cast send --rpc-url $RPC_URL --private-key $PRIVATE_KEY \
+  0x1Cb0c1F72Ba7547fC99c4b5333d8aBA1eD6b31A9 "setSellerRegistry(address)" 0xBB428171D8B612D7185A5C25118Ef7EdC3089B37
+```
 
 ---
 
