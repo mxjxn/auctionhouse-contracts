@@ -30,7 +30,7 @@ abstract contract MarketplaceCore is IMarketplaceCore, IERC721Receiver {
     // Marketplace fee
     uint16 public feeBPS;
     uint16 public referrerBPS;
-    mapping (address => uint256) _feesCollected;
+    mapping (address => uint256) public feesCollected;
 
     // Royalty Engine
     address private _royaltyEngineV1;
@@ -76,8 +76,8 @@ abstract contract MarketplaceCore is IMarketplaceCore, IERC721Receiver {
      * @dev Withdraw accumulated fees from marketplace
      */
     function _withdraw(address erc20, uint256 amount, address payable receiver) internal {
-        require(_feesCollected[erc20] >= amount, "Invalid amount");
-        _feesCollected[erc20] -= amount;
+        require(feesCollected[erc20] >= amount, "Invalid amount");
+        feesCollected[erc20] -= amount;
         SettlementLib.sendTokens(erc20, address(this), receiver, amount);
         emit MarketplaceWithdraw(msg.sender, erc20, amount, receiver);
     }
@@ -204,7 +204,7 @@ abstract contract MarketplaceCore is IMarketplaceCore, IERC721Receiver {
     
     function _purchase(address payable referrer, uint40 listingId, uint24 count, bytes memory data) private {
         MarketplaceLib.Listing storage listing = _getListing(listingId);
-        SettlementLib.performPurchase(_royaltyEngineV1, referrer, listingId, listing, count, _feesCollected, data);
+        SettlementLib.performPurchase(_royaltyEngineV1, referrer, listingId, listing, count, feesCollected, data);
     }
 
     /**
@@ -374,7 +374,7 @@ abstract contract MarketplaceCore is IMarketplaceCore, IERC721Receiver {
             SettlementLib.deliverToken(listing, offerAddress, 1, expectedAmount, false);
         }
         // Settle offer
-        SettlementLib.settleOffer(_royaltyEngineV1, listingId, listing, currentOffer, offerAddress, _feesCollected, maxAmount, _escrow);
+        SettlementLib.settleOffer(_royaltyEngineV1, listingId, listing, currentOffer, offerAddress, feesCollected, maxAmount, _escrow);
     }
 
     /**
@@ -392,7 +392,7 @@ abstract contract MarketplaceCore is IMarketplaceCore, IERC721Receiver {
         require(!bid_.settled, "Invalid state");
         
         // Settle bid
-        SettlementLib.settleBid(_royaltyEngineV1, bid_, listing, _feesCollected);
+        SettlementLib.settleBid(_royaltyEngineV1, bid_, listing, feesCollected);
     }
 
     /**
@@ -467,6 +467,27 @@ abstract contract MarketplaceCore is IMarketplaceCore, IERC721Receiver {
         }
 
         emit MarketplaceLib.FinalizeListing(listingId);
+    }
+
+    /**
+     * @dev See {IMarketplaceCore-endAuctionEarly}.
+     */
+    function endAuctionEarly(uint40 listingId) external virtual override {
+        MarketplaceLib.Listing storage listing = _getListing(listingId);
+        require(listing.seller == msg.sender, "Permission denied");
+        require(listing.details.type_ == MarketplaceLib.ListingType.INDIVIDUAL_AUCTION, "Not an auction");
+        require(!MarketplaceLib.isFinalized(listing.flags), "Already finalized");
+        require(listing.details.endTime > block.timestamp, "Auction already ended");
+        
+        // Set startTime if it was 0 (auction starts on first bid)
+        if (listing.details.startTime == 0) {
+            listing.details.startTime = uint48(block.timestamp);
+        }
+        
+        // Set endTime to current block timestamp to end the auction immediately
+        listing.details.endTime = uint48(block.timestamp);
+        
+        emit MarketplaceLib.ModifyListing(listingId, listing.details.initialAmount, listing.details.startTime, listing.details.endTime);
     }
 
     /**

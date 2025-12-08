@@ -71,6 +71,13 @@ contract MarketplaceUpgradeable is AdminControlUpgradeable, MarketplaceCore, Ree
     }
 
     /**
+     * @dev See {IMarketplaceCore-endAuctionEarly}.
+     */
+    function endAuctionEarly(uint40 listingId) external virtual override nonReentrant {
+        super.endAuctionEarly(listingId);
+    }
+
+    /**
      * @dev See {IMarketplace-withdraw}.
      */
     function withdraw(uint256 amount, address payable receiver) external virtual override adminRequired nonReentrant {
