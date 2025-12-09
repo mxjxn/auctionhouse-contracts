@@ -16,7 +16,6 @@ This document contains deployment information for the Auctionhouse contracts acr
 | **Marketplace Implementation** | `0x2fc08CE6Dd271C9CE6763182DbAed384fEa1986d` | MarketplaceUpgradeable logic |
 | **Royalty Engine** | `0xEF770dFb6D5620977213f55f99bfd781D04BBE15` | Manifold Royalty Engine V1 |
 | **Royalty Registry** | `0x3D1151dc590ebF5C04501a7d4E1f8921546774eA` | Manifold Royalty Registry |
-| **MembershipAllowlistRegistry** | `0xF190fD214844931a92076aeCB5316f769f4A8483` | Seller registry with address allowlisting |
 | **MembershipSellerRegistry** | `0x372990fd91cf61967325dd5270f50c4192bfb892` | Simple membership check (balanceOf > 0) |
 | **OpenSellerRegistry** | `0xBB428171D8B612D7185A5C25118Ef7EdC3089B37` | Open registry with owner-managed blocklist |
 
@@ -26,7 +25,6 @@ This document contains deployment information for the Auctionhouse contracts acr
 - [Marketplace Implementation on BaseScan](https://basescan.org/address/0x2fc08CE6Dd271C9CE6763182DbAed384fEa1986d)
 - [Royalty Engine on BaseScan](https://basescan.org/address/0xEF770dFb6D5620977213f55f99bfd781D04BBE15)
 - [Royalty Registry on BaseScan](https://basescan.org/address/0x3D1151dc590ebF5C04501a7d4E1f8921546774eA)
-- [MembershipAllowlistRegistry on BaseScan](https://basescan.org/address/0xF190fD214844931a92076aeCB5316f769f4A8483)
 - [MembershipSellerRegistry on BaseScan](https://basescan.org/address/0x372990fd91cf61967325dd5270f50c4192bfb892)
 - [OpenSellerRegistry on BaseScan](https://basescan.org/address/0xBB428171D8B612D7185A5C25118Ef7EdC3089B37)
 
@@ -36,34 +34,6 @@ This document contains deployment information for the Auctionhouse contracts acr
 - **Royalty Engine**: Uses Manifold Royalty Engine V1 (deployed on mainnet)
 - **Membership NFT Contract**: `0x4b212e795b74a36B4CCf744Fc2272B34eC2e9d90` (STP v2)
 - **Configuration**: TODO - Verify seller registry and royalty engine are configured
-
-### MembershipAllowlistRegistry Deployment
-
-**Deployment Date**: 2025-01-XX  
-**Block**: 39088486  
-**Transaction Hash**: [`0x80c82453cc8ecd5f001ac1d5fceef36b725a6f354471d39cba66718d99e07bd8`](https://basescan.org/tx/0x80c82453cc8ecd5f001ac1d5fceef36b725a6f354471d39cba66718d99e07bd8)  
-**Deployer**: `0x6dA173B1d50F7Bc5c686f8880C20378965408344`  
-**Status**: ✅ Successfully Deployed
-
-**Contract Address**: `0xF190fD214844931a92076aeCB5316f769f4A8483`
-
-**Features**:
-- Allows membership holders to associate additional addresses (e.g., Farcaster verified wallets)
-- Associated addresses can sell on the marketplace if the membership holder still has active membership
-- Implements `IMarketplaceSellerRegistry` interface
-- Membership NFT Contract: `0x4b212e795b74a36B4CCf744Fc2272B34eC2e9d90`
-
-**Deployment Script**:
-```bash
-forge script script/DeployMembershipAllowlistRegistry.s.sol:DeployMembershipAllowlistRegistry \
-    --rpc-url https://mainnet.base.org \
-    --private-key $PRIVATE_KEY \
-    --broadcast -vvv
-```
-
-**Next Steps**:
-- Set as seller registry in marketplace using `setSellerRegistry(address)`
-- Marketplace Proxy: `0x1Cb0c1F72Ba7547fC99c4b5333d8aBA1eD6b31A9`
 
 ### OpenSellerRegistry Deployment
 

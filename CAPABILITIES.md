@@ -452,7 +452,6 @@ Optional seller authorization via `IMarketplaceSellerRegistry`.
 |----------|-------|----------|
 | `OpenSellerRegistry` | Allow-all with blocklist | Open marketplace, block bad actors |
 | `MembershipSellerRegistry` | Membership required | Members-only marketplace |
-| `MembershipAllowlistRegistry` | Membership + associated wallets | Members can associate other wallets |
 
 **OpenSellerRegistry (Recommended for open marketplaces):**
 - Everyone can sell by default
@@ -464,11 +463,6 @@ Optional seller authorization via `IMarketplaceSellerRegistry`.
 - Checks if seller holds membership NFT
 - Uses `balanceOf()` to verify membership
 - Supports STP v2 NFTs (time-based membership)
-
-**MembershipAllowlistRegistry:**
-- Membership holders can sell
-- Membership holders can associate additional wallets (e.g., Farcaster verified)
-- Associated wallets can sell if membership holder still has active membership
 
 **Custom Registry:**
 - Implement `IMarketplaceSellerRegistry` interface
@@ -1024,7 +1018,6 @@ interface IMarketplaceSellerRegistry is IERC165 {
 **Implementation:**
 - `OpenSellerRegistry`: Allows everyone, owner-managed blocklist
 - `MembershipSellerRegistry`: Checks NFT balance
-- `MembershipAllowlistRegistry`: Membership + associated wallets
 - Custom registries: Implement your own logic
 
 **Use Cases:**
@@ -1494,7 +1487,6 @@ marketplace.bid{value: 0.6 ether}(listingId, false);
 - **MarketplaceUpgradeable**: Upgradeable implementation contract
 - **OpenSellerRegistry**: Allow-all seller registry with owner-managed blocklist
 - **MembershipSellerRegistry**: NFT-based seller registry
-- **MembershipAllowlistRegistry**: Membership + associated wallets registry
 - **ILazyDelivery**: Interface for lazy minting (implement in your contract)
 - **IPriceEngine**: Interface for dynamic pricing (implement in your contract)
 - **IIdentityVerifier**: Interface for access control (implement in your contract)

@@ -214,12 +214,6 @@ interface IMarketplaceCore {
     function cancel(uint40 listingId, uint16 holdbackBPS) external;
     
     /**
-     * @dev End auction early - allows seller to set endTime to current block timestamp
-     * This enables the seller to finalize the auction immediately even if there are bids
-     */
-    function endAuctionEarly(uint40 listingId) external;
-    
-    /**
      * @dev Get listing details
      */
     function getListing(uint40 listingId) external view returns(Listing memory);
@@ -248,11 +242,4 @@ interface IMarketplaceCore {
      * @dev Returns offers of a listing. No ordering guarantees
      */
     function getOffers(uint40 listingId) external view returns(Offer[] memory);
-
-    /**
-     * @dev Get accumulated marketplace fees for a token
-     * @param erc20 Token address (address(0) for native ETH)
-     * @return Amount of accumulated fees
-     */
-    function feesCollected(address erc20) external view returns(uint256);
 }

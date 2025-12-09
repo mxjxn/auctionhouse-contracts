@@ -7,7 +7,6 @@ The main differences are:
 - **Multiple seller registry options**:
   - `OpenSellerRegistry`: Allow-all with owner-managed blocklist (open marketplace)
   - `MembershipSellerRegistry`: Requires membership NFT to sell
-  - `MembershipAllowlistRegistry`: Membership + associated wallet support
 
 ## Foundry
 

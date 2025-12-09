@@ -126,13 +126,13 @@ The secure contract requires a multi-wallet signature flow:
 3. **Signatures are stored in localStorage** for 1 hour
 4. **Self-revocation** - Associated addresses can remove themselves
 
-## Previous Contract (Deprecated)
+## Previous Contract (Removed)
 
 | Field | Value |
 |-------|-------|
 | **Contract** | `MembershipAllowlistRegistry` (insecure) |
 | **Address** | `0xF190fD214844931a92076aeCB5316f769f4A8483` |
-| **Status** | ⚠️ Deprecated - do not use |
+| **Status** | ❌ Removed from codebase - do not use |
 
 ## Date
 
